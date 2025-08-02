@@ -1,0 +1,70 @@
+{
+    "es": {
+        "title": "Mi Portafolio",
+        "logo": "Jesús Pineda",
+        "nav": {
+            "about": "Acerca de mí",
+            "portfolio": "Portafolio",
+            "experience": "Experiencia",
+            "contact": "Contacto"
+        },
+        "aboutTitle": "Acerca de mí",
+        "aboutDesc": "Soy un profesional apasionado por la tecnología con amplia experiencia en desarrollo de sistemas. He trabajado como gerente y desarrollador en empresas como Premium Restaurant Brands, TDC, Hildebrando y Consult International, liderando y participando en proyectos innovadores. Me motiva crear soluciones que generen valor y mejoren la experiencia de los usuarios.",
+        "aboutPhoto": "Tu Foto",
+        "portfolioTitle": "Portafolio",
+        "experienceTitle": "Experiencia",
+        "contactTitle": "Contacto",
+        "contactFormTitle": "Enviame un mensaje",
+        "contactFormDescription": "Usa el siguiente formulario para enviarme un mensaje directamente. Responderé tan pronto como me sea posible.",
+        "labelName": "Nombre",
+        "labelEmail": "Correo electrónico",
+        "labelMessage": "Mensaje",
+        "sendBtn": "Enviar",
+        "contactSuccess": "¡Gracias por tu mensaje! Pronto me pondré en contacto contigo.",
+        "footer": "&copy; 2025 Jesús Pineda. Todos los derechos reservados.",
+        "placeholders": {
+            "name": "Tu nombre",
+            "email": "tucorreo@email.com",
+            "message": "Escribe tu mensaje aquí..."
+        },
+        "requiredMessages": {
+            "name": "Por favor ingresa tu nombre",
+            "email": "Por favor ingresa un correo válido",
+            "message": "Por favor escribe tu mensaje"
+        }
+    },
+    "en": {
+        "title": "My Portfolio",
+        "logo": "Jesús Pineda",
+        "nav": {
+            "about": "About Me",
+            "portfolio": "Portfolio",
+            "experience": "Experience",
+            "contact": "Contact"
+        },
+        "aboutTitle": "About Me",
+        "aboutDesc": "I am a technology enthusiast with extensive experience in systems development. I have worked as a manager and developer at companies such as Premium Restaurant Brands, TDC, Hildebrando, and Consult International, leading and participating in innovative projects. I am motivated by creating solutions that add value and improve user experience.",
+        "aboutPhoto": "Your Photo",
+        "portfolioTitle": "Portfolio",
+        "experienceTitle": "Experience",
+        "contactTitle": "Contact",
+        "contactFormTitle": "Send me a message",
+        "contactFormDescription": "Use the form below to send me a message directly. I will reply as soon as possible.",
+        "labelName": "Name",
+        "labelEmail": "Email",
+        "labelMessage": "Message",
+        "sendBtn": "Send",
+        "contactSuccess": "Thank you for your message! I will contact you soon.",
+        "footer": "&copy; 2025 Jesús Pineda. All rights reserved.",
+        "placeholders": {
+            "name": "Your name",
+            "email": "youremail@email.com",
+            "message": "Write your message here..."
+        },
+        "requiredMessages": {
+            "name": "Please enter your name",
+            "email": "Please enter a valid email",
+            "message": "Please enter your message"
+        }
+    }
+}

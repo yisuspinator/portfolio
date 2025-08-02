@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Snake</title>
+    <style>
+        /* Estilos CSS para el juego de Snake */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #1a1a1a;
+            /* Fondo oscuro similar a tu portafolio */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #f8f8f2;
+            /* Texto claro */
+        }
+
+        #header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1em;
+            margin-top: 0em;
+            margin-bottom: 0em;
+        }
+
+        .game-container {
+            background-color: #282c34;
+            /* Fondo del área de juego */
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(100, 255, 218, 0.4);
+            /* Sombra de neón */
+            text-align: center;
+            border: 2px solid #64ffda;
+            /* Borde de acento */
+            max-width: 98vw;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #64ffda;
+            /* Color de acento */
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 2.2em;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+        }
+
+        canvas {
+            background-color: #000;
+            /* Fondo del tablero de juego */
+            border: 2px solid #64ffda;
+            /* Borde de neón para el canvas */
+            display: block;
+            /* Elimina espacio extra debajo del canvas */
+            margin: 0 auto 20px;
+            max-width: 98vw;
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #a6a6a6;
+        }
+
+        .score-display,
+        .level-display {
+            font-weight: bold;
+            color: #f8f8f2;
+        }
+
+        .game-message {
+            margin-top: 20px;
+            font-size: 1.3em;
+            color: #f8d7da;
+            /* Color para mensajes de error/game over */
+            font-weight: bold;
+            display: none;
+            /* Oculto por defecto */
+        }
+
+        .game-controls {
+            margin-top: 15px;
+        }
+
+        .control-button {
+            background-color: #64ffda;
+            color: #1a1a1a;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 8px rgba(100, 255, 218, 0.3);
+        }
+
+        .control-button:hover {
+            background-color: #45a29e;
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(100, 255, 218, 0.6);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: transparent;
+            color: #64ffda;
+            padding: 10px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            border: 2px solid #64ffda;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease-in-out;
+            box-shadow: 0 0 10px #64ffda33;
+            margin-left: 4px;
+            margin-right: 4px;
+            cursor: pointer;
+        }
+
+        .cta-button:hover,
+        .cta-button:focus {
+            background-color: #64ffda;
+            color: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px #64ffda99;
+            outline: none;
+        }
+
+        .cta-button.selected,
+        .cta-button:focus-visible {
+            background-color: #64ffda;
+            color: #1a1a1a;
+            outline: none;
+        }
+
+        .instructions {
+            margin-top: 25px;
+            font-size: 0.95em;
+            color: #a6a6a6;
+            line-height: 1.5;
+        }
+
+        .instructions strong {
+            color: #f8f8f2;
+        }
+
+        /* Controles táctiles */
+        .touch-controls {
+            margin-top: 20px;
+            user-select: none;
+            display: none;
+        }
+
+        .touch-controls .row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .touch-controls .control-button {
+            width: 60px;
+            height: 60px;
+            font-size: 2em;
+            margin: 5px;
+            padding: 0;
+        }
+
+        @media (max-width: 600px) {
+            .game-container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .game-info {
+                font-size: 1em;
+            }
+
+            .control-button {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+
+            .touch-controls .control-button {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3em;
+            }
+        }
+
+        .language-switcher {
+            margin-bottom: 10px;
+            text-align: right;
+        }
+
+        .language-switcher button {
+            background: none;
+            border: none;
+            color: #64ffda;
+            font-weight: bold;
+            font-size: 1em;
+            margin-left: 8px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .language-switcher button.active {
+            color: #fff;
+            text-decoration: none;
+            cursor: default;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-container">
+        <div id="header" class="language-switcher">
+            <h1 id="snake-title">Snake</h1>
+            <div class="game-controls">
+                <button class="control-button" id="startButton">Iniciar</button>
+                <button class="control-button" id="resetButton" style="display: none;">Reiniciar</button>
+                <button class="control-button" id="pauseButton">Pausa</button>
+                <button class="control-button" id="resumeButton" style="display: none;">Continuar</button>
+            </div>
+            <button id="lang-es" class="cta-button selected" style="display:none" tabindex="0">ES</button>
+            <button id="lang-en" class="cta-button" style="display:none" tabindex="0">EN</button>
+        </div>
+        <div class="game-info">
+            <div id="score-label">Puntuación: <span id="score">0</span></div>
+            <div id="level-label">Nivel: <span id="level">1</span></div>
+        </div>
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+        <!-- Controles táctiles para móviles 
+        <div class="touch-controls" id="touchControls">
+            <div class="row">
+                <button class="control-button" id="upBtn">▲</button>
+            </div>
+            <div class="row">
+                <button class="control-button" id="leftBtn">◀</button>
+                <button class="control-button" id="downBtn">▼</button>
+                <button class="control-button" id="rightBtn">▶</button>
+            </div>
+        </div>
+        -->
+
+        <div class="game-message" id="message">¡Presiona "Iniciar Juego" para empezar!</div>
+        <div class="instructions" id="instructions">
+            <strong>Controles:</strong> Usa las <b>flechas del teclado</b> (arriba, abajo, izquierda, derecha) o desliza
+            el dedo sobre la pantalla para mover la serpiente.
+            <br>¡Come la comida para crecer y ganar puntos!
+        </div>
+    </div>
+
+    <script>
+        // --- Multi-idioma ---
+        const translations = {
+            es: {
+                title: "Snake",
+                scoreLabel: "Puntuación: ",
+                levelLabel: "Nivel: ",
+                start: "Iniciar Juego",
+                reset: "Reiniciar",
+                pause: "Pausa",
+                resume: "Continuar",
+                messageStart: '¡Presiona "Iniciar Juego" para empezar!',
+                messageGameOver: "¡Game Over! Puntuación final: ",
+                instructions: "<strong>Controles:</strong> Usa las <b>flechas del teclado</b> (arriba, abajo, izquierda, derecha) o desliza el dedo sobre la pantalla para mover la serpiente.<br>¡Come la comida para crecer y ganar puntos!"
+            },
+            en: {
+                title: "Snake",
+                scoreLabel: "Score: ",
+                levelLabel: "Level: ",
+                start: "Start Game",
+                reset: "Restart",
+                pause: "Pause",
+                resume: "Resume",
+                messageStart: 'Press "Start Game" to begin!',
+                messageGameOver: "Game Over! Final score: ",
+                instructions: "<strong>Controls:</strong> Use the <b>arrow keys</b> (up, down, left, right) or swipe on the screen to move the snake.<br>Eat the food to grow and earn points!"
+            }
+        };
+
+
+        // Variables y elementos
+        // Responsive canvas para móvil y desktop
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let score = 0;
+        let level = 1;
+        let snake = [];
+        let food = {};
+        let dx = getGridSize();
+        let dy = 0;
+        let scoreBak = -1;
+        let gameInterval;
+        let gameSpeed = 150;
+        let changingDirection = false;
+        let gameOver = false;
+        let paused = false;
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+        let touchStartTime = 0;
+        let currentLang = "en";
+
+        const minSwipeDistance = 30; // píxeles
+        const maxSwipeTime = 500; // ms
+
+        const scoreDisplay = () => document.querySelector('#score');
+        const levelDisplay = () => document.querySelector('#level');
+        const messageDisplay = document.getElementById('message');
+        const startButton = document.getElementById('startButton');
+        const resetButton = document.getElementById('resetButton');
+        const pauseButton = document.getElementById('pauseButton');
+        const resumeButton = document.getElementById('resumeButton');
+        const touchControls = document.getElementById('touchControls');
+
+
+        function setLang(lang) {
+            currentLang = lang;
+            // Actualiza textos
+            document.getElementById('snake-title').textContent = translations[lang].title;
+            document.getElementById('score-label').innerHTML = translations[lang].scoreLabel + '<span id="score">' + score + '</span>';
+            document.getElementById('level-label').innerHTML = translations[lang].levelLabel + '<span id="level">' + level + '</span>';
+            document.getElementById('startButton').textContent = translations[lang].start;
+            document.getElementById('resetButton').textContent = translations[lang].reset;
+            document.getElementById('pauseButton').textContent = translations[lang].pause;
+            document.getElementById('resumeButton').textContent = translations[lang].resume;
+            document.getElementById('instructions').innerHTML = translations[lang].instructions;
+            document.getElementById('message').textContent = translations[lang].messageStart;
+            document.title = translations[lang].title;
+            document.getElementById('page-title') && (document.getElementById('page-title').textContent = translations[lang].title);
+
+            // Actualiza botones activos
+            document.getElementById('lang-es').classList.toggle('selected', lang === 'es');
+            document.getElementById('lang-en').classList.toggle('selected', lang === 'en');
+            if (lang === 'es') {
+                document.getElementById('lang-es').focus();
+            } else {
+                document.getElementById('lang-en').focus();
+            }
+        }
+
+        document.getElementById('lang-es').addEventListener('click', () => setLang('es'));
+        document.getElementById('lang-en').addEventListener('click', () => setLang('en'));
+
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+
+        canvas.addEventListener('touchstart', (e) => {
+            const touch = e.changedTouches[0];
+            touchStartX = touch.screenX;
+            touchStartY = touch.screenY;
+            touchStartTime = Date.now();
+        });
+
+        canvas.addEventListener('touchend', (e) => {
+            const touch = e.changedTouches[0];
+            touchEndX = touch.screenX;
+            touchEndY = touch.screenY;
+            const timeDiff = Date.now() - touchStartTime;
+
+            const t_dx = touchEndX - touchStartX;
+            const t_dy = touchEndY - touchStartY;
+
+            if (timeDiff > maxSwipeTime) return; // muy lento, ignorar
+
+            if (Math.abs(t_dx) > Math.abs(t_dy)) {
+                // Horizontal swipe
+                if (Math.abs(t_dx) > minSwipeDistance) {
+                    if (t_dx > 0) {
+                        simulateKey(39);  // Swipe derecha
+                    } else {
+                        simulateKey(37); // Swipe izquierda
+                    }
+                }
+            } else {
+                // Vertical swipe
+                if (Math.abs(t_dy) > minSwipeDistance) {
+                    if (t_dy > 0) {
+                        simulateKey(40); // Swipe hacia abajo
+                    } else {
+                        simulateKey(38); // Swipe hacia arriba = rotar
+                    }
+                }
+            }
+        });
+
+        function resizeCanvas() {
+            let sizeW = Math.min(window.innerWidth * 0.98, 300);
+            let sizeH = Math.min(window.innerHeight * 0.98, 300);
+            //console.log('resizeCanvas', sizeW, sizeH);
+            canvas.style.width = sizeW + 'px';
+            canvas.style.height = sizeH + 'px';
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        // Funciones dinámicas para grid y tablero
+        function getGridSize() {
+            return Math.floor(canvas.width / 20);
+        }
+        function getTileCount() {
+            return Math.floor(canvas.width / getGridSize());
+        }
+
+        // --- Funciones del Juego ---
+        function initializeGame() {
+            const gridSize = getGridSize();
+            snake = [
+                { x: 10 * gridSize, y: 10 * gridSize },
+                { x: 9 * gridSize, y: 10 * gridSize },
+                { x: 8 * gridSize, y: 10 * gridSize }
+            ];
+            dx = gridSize;
+            dy = 0;
+            score = 0;
+            level = 1;
+            gameSpeed = 150;
+            gameOver = false;
+            paused = false;
+            scoreDisplay().textContent = score;
+            levelDisplay().textContent = level;
+            messageDisplay.style.display = 'none';
+
+            startButton.style.display = 'none';
+            resetButton.style.display = 'inline-block';
+
+            pauseButton.style.display = 'inline-block';
+            resumeButton.style.display = 'none';
+
+            generateFood();
+            startGameLoop();
+        }
+
+        function startGameLoop() {
+            clearInterval(gameInterval);
+            gameInterval = setInterval(gameTick, gameSpeed);
+        }
+
+        function resumeGame() {
+            if (paused) {
+                paused = false;
+                pauseButton.style.display = 'inline-block';
+                resumeButton.style.display = 'none';
+
+                pauseButton.style.display = 'inline-block';
+                resumeButton.style.display = 'none';
+
+                startGameLoop();
+            }
+        }
+
+        function pauseGame() {
+            if (gameOver || gameInterval === undefined) return;
+
+            paused = true;
+            pauseButton.style.display = 'none';
+            resumeButton.style.display = 'inline-block';
+            clearInterval(gameInterval);
+        }
+
+        function gameTick() {
+            if (gameOver) return;
+            changingDirection = false;
+            clearCanvas();
+            drawFood();
+            moveSnake();
+            drawSnake();
+
+            if (checkCollision()) {
+                endGame(translations[currentLang].messageGameOver);
+                return;
+            }
+
+            // Aumentar nivel cada 5 puntos
+            if (score > 0 && score % 5 === 0 && level < 10) {
+                if (scoreBak !== score) {
+                    scoreBak = score;
+                    level++;
+                    levelDisplay().textContent = level;
+                    gameSpeed -= 10;
+                    if (gameSpeed < 50) gameSpeed = 50;
+                    startGameLoop();
+                }
+            }
+        }
+
+        function clearCanvas() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawSnake() {
+            snake.forEach(drawSnakePart);
+        }
+
+        function drawSnakePart(part) {
+            const gridSize = getGridSize();
+            ctx.fillStyle = '#64ffda'; // Color de la serpiente (verde acento)
+            ctx.strokeStyle = '#1a1a1a'; // Borde para definir los segmentos
+            ctx.fillRect(part.x, part.y, gridSize, gridSize);
+            ctx.strokeRect(part.x, part.y, gridSize, gridSize);
+        }
+
+        function generateFood() {
+            const gridSize = getGridSize();
+            const tileCount = getTileCount();
+            let newFoodX, newFoodY;
+            let foodOnSnake = true;
+            while (foodOnSnake) {
+                newFoodX = Math.floor(Math.random() * tileCount) * gridSize;
+                newFoodY = Math.floor(Math.random() * tileCount) * gridSize;
+                foodOnSnake = snake.some(part => part.x === newFoodX && part.y === newFoodY);
+            }
+            food = { x: newFoodX, y: newFoodY };
+        }
+
+        function drawFood() {
+            const gridSize = getGridSize();
+            ctx.fillStyle = '#ff4500'; // Color de la comida (rojo anaranjado)
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.fillRect(food.x, food.y, gridSize, gridSize);
+            ctx.strokeRect(food.x, food.y, gridSize, gridSize);
+        }
+
+        function moveSnake() {
+            const gridSize = getGridSize();
+            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+            snake.unshift(head); // Añade la nueva cabeza al principio
+
+            const didEatFood = head.x === food.x && head.y === food.y;
+            if (didEatFood) {
+                score++;
+                scoreDisplay().textContent = score;
+                generateFood();
+            } else {
+                snake.pop(); // Elimina la cola si no comió comida
+            }
+        }
+
+        function checkCollision() {
+            const head = snake[0];
+            const canvasSize = canvas.width;
+            const hitLeftWall = head.x < 0;
+            const hitRightWall = head.x >= canvasSize;
+            const hitTopWall = head.y < 0;
+            const hitBottomWall = head.y >= canvasSize;
+
+            if (hitLeftWall || hitRightWall || hitTopWall || hitBottomWall) {
+                return true;
+            }
+
+            // Colisión con su propio cuerpo (empezar desde el 4to segmento para evitar la cabeza y los primeros)
+            for (let i = 4; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function changeDirection(event) {
+            //console.log('changeDirection', event.keyCode);
+            if (event.keyCode !== undefined) {
+                event.preventDefault();
+            }
+
+            if (changingDirection || gameOver) return;
+            changingDirection = true;
+
+            const gridSize = getGridSize();
+            let keyPressed = event.keyCode;
+            // Para controles táctiles, puede venir como event.direction
+            if (event.direction) {
+                keyPressed = event.direction;
+            }
+            const LEFT_KEY = 37;
+            const UP_KEY = 38;
+            const RIGHT_KEY = 39;
+            const DOWN_KEY = 40;
+
+            const goingUp = dy === -gridSize;
+            const goingDown = dy === gridSize;
+            const goingLeft = dx === -gridSize;
+            const goingRight = dx === gridSize;
+
+            if (keyPressed === LEFT_KEY && !goingRight) {
+                dx = -gridSize;
+                dy = 0;
+            }
+            if (keyPressed === UP_KEY && !goingDown) {
+                dx = 0;
+                dy = -gridSize;
+            }
+            if (keyPressed === RIGHT_KEY && !goingLeft) {
+                dx = gridSize;
+                dy = 0;
+            }
+            if (keyPressed === DOWN_KEY && !goingUp) {
+                dx = 0;
+                dy = gridSize;
+            }
+        }
+
+        function endGame(message) {
+            gameOver = true;
+            clearInterval(gameInterval);
+            messageDisplay.textContent = message + score;
+            messageDisplay.style.display = 'block';
+            resetButton.style.display = 'inline-block';
+            startButton.style.display = 'none';
+        }
+
+        // --- Event Listeners ---
+        document.addEventListener('keydown', changeDirection);
+        startButton.addEventListener('click', initializeGame);
+        resetButton.addEventListener('click', initializeGame);
+        pauseButton.addEventListener('click', pauseGame);
+        resumeButton.addEventListener('click', resumeGame);
+
+        // --- Mostrar controles táctiles en móviles ---
+        function isMobile() {
+            return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+        }
+        if (isMobile()) {
+            touchControls.style.display = 'block';
+        }
+
+        // --- Controles táctiles ---
+        function simulateKey(direction) {
+            changeDirection({ direction });
+        }
+
+        /*
+        document.getElementById('upBtn').addEventListener('touchstart', e => { e.preventDefault(); simulateKey(38); });
+        document.getElementById('downBtn').addEventListener('touchstart', e => { e.preventDefault(); simulateKey(40); });
+        document.getElementById('leftBtn').addEventListener('touchstart', e => { e.preventDefault(); simulateKey(37); });
+        document.getElementById('rightBtn').addEventListener('touchstart', e => { e.preventDefault(); simulateKey(39); });
+        */
+
+        // --- Redimensionar y reiniciar juego al cambiar tamaño ---
+        
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+        });
+        
+
+
+        // Inicializa idioma por defecto
+        setLang(currentLang);
+        resizeCanvas();
+    </script>
+</body>
+
+</html>

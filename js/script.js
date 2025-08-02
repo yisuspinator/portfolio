@@ -1,113 +1,142 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Selecciona todas las secciones de contenido, excluyendo la sección 'hero'
-    // que se animará de manera diferente al cargar la página.
-    const contentSections = document.querySelectorAll('.content-section:not(#hero)');
+let translations = {};
+let currentLang = 'es';
 
-    // Selecciona todos los ítems de proyectos dentro de la cuadrícula del portafolio.
-    const projectItems = document.querySelectorAll('#portfolio-grid .project-item');
+async function loadTranslations() {
+    const response = await fetch('data/translations.json');
+    translations = await response.json();
 
-    // Selecciona el encabezado de la página.
-    const header = document.querySelector('header');
+    setLang(currentLang);
+    //console.log("Translations loaded:", translations);
+}
 
-    // Opciones para el Intersection Observer.
-    // rootMargin: Permite que la animación se active un poco antes de que el elemento
-    // esté completamente visible, dando una sensación más fluida.
-    // threshold: El porcentaje del elemento que debe ser visible para que la devolución
-    // de llamada se active.
-    const observerOptions = {
-        rootMargin: '-20px 0px -20px 0px', // Activa 20px antes de entrar/salir del borde superior/inferior
-        threshold: 0.1 // El 10% del elemento debe ser visible
-    };
+function setLang(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
 
-    // --- Observer para las secciones generales (Acerca de mí, Currículum, Contacto) ---
-    // Este observador detecta cuándo una sección de contenido entra en el área visible.
-    const sectionObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Si la sección es visible, le añade la clase 'animated'.
-                // Esta clase activa la transición de CSS (opacidad y transformación).
-                entry.target.classList.add('animated');
-                // Deja de observar la sección una vez que ya ha sido animada.
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    // Itera sobre cada sección de contenido y empieza a observarla.
-    contentSections.forEach(section => {
-        sectionObserver.observe(section);
-    });
-
-    // --- Observer para los ítems del portafolio ---
-    // Similar al anterior, pero específico para los proyectos individuales.
-    const projectObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Cuando un ítem de proyecto es visible, le añade la clase 'animated'.
-                entry.target.classList.add('animated');
-                // Deja de observar el ítem una vez que ya ha sido animado.
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    // Itera sobre cada ítem de proyecto y empieza a observarlo.
-    projectItems.forEach(item => {
-        projectObserver.observe(item);
-    });
-
-    // --- Efecto de 'scroll' en el encabezado (header) ---
-    // Este evento se dispara cada vez que el usuario hace scroll.
-    window.addEventListener('scroll', () => {
-        // Si el usuario se ha desplazado más de 50 píxeles hacia abajo...
-        if (window.scrollY > 50) {
-            // ...añade la clase 'scrolled' al header.
-            // Esta clase en CSS cambiará el estilo del header (ej., más compacto, sombra).
-            header.classList.add('scrolled');
-        } else {
-            // Si el usuario vuelve arriba, quita la clase 'scrolled'.
-            header.classList.remove('scrolled');
-        }
-    });
-
-    // --- Desplazamiento suave (Smooth Scroll) para enlaces de navegación ---
-    // Esto es útil si decides tener anclas que lleven a secciones dentro de la misma página
-    // (ej., un botón "Ir a Portafolio" en el Home que desplace suavemente).
-    // También maneja la navegación a otras páginas HTML de forma estándar.
-    document.querySelectorAll('nav a').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const href = this.getAttribute('href');
-
-            // Verifica si el enlace es un ancla interna (empieza con '#').
-            if (href.startsWith('#')) {
-                e.preventDefault(); // Previene el comportamiento por defecto del ancla (salto brusco).
-                const targetId = href.substring(1); // Obtiene el ID de la sección (sin el '#').
-                const targetElement = document.getElementById(targetId);
-
-                if (targetElement) {
-                    // Desplaza la ventana suavemente hasta el elemento objetivo.
-                    // Resta la altura del header para que la sección no quede oculta debajo.
-                    window.scrollTo({
-                        top: targetElement.offsetTop - (header ? header.offsetHeight : 0),
-                        behavior: 'smooth' // Habilita el desplazamiento suave.
-                    });
+    if (translations[lang]) {
+        if (document.title !== undefined) document.title = translations[lang].title;
+        const ids = [
+            ['page-title', 'title'],
+            ['logo-text', 'logo'],
+            ['nav-about', 'nav.about'],
+            ['nav-portfolio', 'nav.portfolio'],
+            ['nav-experience', 'nav.experience'],
+            ['nav-contact', 'nav.contact'],
+            ['about-title', 'aboutTitle'],
+            ['about-desc', 'aboutDesc'],
+            ['about-photo-placeholder', 'aboutPhoto'],
+            ['portfolio-title', 'portfolioTitle'],
+            ['experience-title', 'experienceTitle'],
+            ['contact-title', 'contactTitle'],
+            ['contact-form-title', 'contactFormTitle'],
+            ['contact-form-description', 'contactFormDescription'],
+            ['label-name', 'labelName'],
+            ['label-email', 'labelEmail'],
+            ['label-message', 'labelMessage'],
+            ['send-btn', 'sendBtn'],
+            ['footer-text', 'footer']
+        ];
+        ids.forEach(([id, key]) => {
+            const el = document.getElementById(id);
+            if (el && translations[lang]) {
+                // Soporte para claves anidadas (nav.about, etc)
+                let value = translations[lang];
+                key.split('.').forEach(k => value = value && value[k]);
+                if (value !== undefined) {
+                    if (id === 'footer-text') {
+                        el.innerHTML = value;
+                    } else {
+                        el.textContent = value;
+                    }
                 }
             }
-            // Si el enlace no empieza con '#', el navegador maneja la navegación normal
-            // a otra página HTML (ej., about.html, portfolio.html).
+        });
+
+        // Placeholders
+        const nameInput = document.getElementById('name');
+        if (nameInput && translations[lang].placeholders?.name)
+            nameInput.placeholder = translations[lang].placeholders.name;
+        const emailInput = document.getElementById('email');
+        if (emailInput && translations[lang].placeholders?.email)
+            emailInput.placeholder = translations[lang].placeholders.email;
+        const messageInput = document.getElementById('message');
+        if (messageInput && translations[lang].placeholders?.message)
+            messageInput.placeholder = translations[lang].placeholders.message;
+
+        // Traducción dinámica de los proyectos
+        document.querySelectorAll('.portfolio-item-title').forEach(el => {
+            if (el && el.dataset[lang]) el.textContent = el.dataset[lang];
+        });
+        document.querySelectorAll('.portfolio-item-desc').forEach(el => {
+            if (el && el.dataset[lang]) el.textContent = el.dataset[lang];
+        });
+        document.querySelectorAll('.portfolio-item .cta-button').forEach(el => {
+            if (el && el.dataset[lang]) el.textContent = el.dataset[lang];
+        });
+
+        // Traducción dinámica de experiencia
+        document.querySelectorAll('.experience-item strong, .experience-item span, .experience-item div').forEach(el => {
+            if (el && el.dataset[lang]) el.innerHTML = el.dataset[lang].replace(/\\n/g, "<br>");
+        });
+
+        // Botones de idioma
+        const langEs = document.getElementById('lang-es');
+        const langEn = document.getElementById('lang-en');
+        if (langEs) langEs.classList.toggle('selected', lang === 'es');
+        if (langEn) langEn.classList.toggle('selected', lang === 'en');
+        if (lang === 'es' && langEs) {
+            langEs.focus();
+        } else if (langEn) {
+            langEn.focus();
+        }
+    }
+}
+
+function setCustomValidationMessages(textbox) {
+    const msgs = translations[currentLang]?.requiredMessages || {};
+    const value = textbox.value.trim();
+
+    if (value === '') {
+        if (textbox.id === 'name') {
+            textbox.setCustomValidity(msgs.name || 'Required name');
+        } else if (textbox.id === 'email') {
+            textbox.setCustomValidity(msgs.email || 'Required email address');
+        } else if (textbox.id === 'message') {
+            textbox.setCustomValidity(msgs.message || 'Required message');
+        }
+    } else if (textbox.validity.typeMismatch && textbox.id === 'email') {
+        textbox.setCustomValidity(msgs.emailMismatch || 'Please enter a valid email address');
+    } else {
+        textbox.setCustomValidity('');
+    }
+
+    return true;
+}
+
+function init() {
+    document.getElementById('lang-es').addEventListener('click', () => setLang('es'));
+    document.getElementById('lang-en').addEventListener('click', () => setLang('en'));
+
+    // Navegación activa
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', function () {
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+            this.classList.add('active');
         });
     });
 
-    // --- Animación de entrada para la Hero Section al cargar la página ---
-    // Esta sección se anima inmediatamente sin Intersection Observer,
-    // ya que es la primera cosa que ve el usuario.
-    const heroContent = document.querySelector('#hero .hero-content');
-    if (heroContent) {
-        // La animación 'fadeInSlideUp' se define en el CSS.
-        // Aquí simplemente nos aseguramos de que el elemento tenga su estado inicial
-        // y se aplique la animación al cargar el DOM.
-        // La clase 'animated' también puede usarse si hay una animación más general.
-        // No es necesario añadir una clase específica si la animación ya está
-        // definida directamente con `animation` en el CSS para `hero-content`.
-    }
-});
+    // Formulario de contacto (solo muestra mensaje de éxito)
+    document.getElementById('contact-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        document.getElementById('contact-success').textContent = translations[currentLang].contactSuccess;
+        document.getElementById('contact-success').style.display = 'block';
+        this.reset();
+        setTimeout(() => {
+            document.getElementById('contact-success').style.display = 'none';
+        }, 4000);
+    });
+
+    // Inicializa idioma por defecto
+    loadTranslations();
+}
+
