@@ -130,8 +130,8 @@
             flex-wrap: wrap;
         }
         .about-photo {
-            width: 140px;
-            height: 140px;
+            width: 200px;
+            height: 200px;
             background: var(--silver);
             border-radius: 50%;
             box-shadow: 0 2px 16px #bfc5ce55;
