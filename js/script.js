@@ -1,8 +1,8 @@
 let translations = {};
 let currentLang = 'es';
 
-async function loadTranslations() {
-    const response = await fetch('/data/translations.json');
+async function loadTranslations(translationsData) {
+    const response = await fetch(translationsData || 'data/translations.json');
     translations = await response.json();
 
     setLang(currentLang);
@@ -115,7 +115,7 @@ function setCustomValidationMessages(textbox) {
     return true;
 }
 
-function init() {
+function init(translationsData) {
     document.getElementById('lang-es').addEventListener('click', () => setLang('es'));
     document.getElementById('lang-en').addEventListener('click', () => setLang('en'));
 
@@ -149,6 +149,6 @@ function init() {
     */
 
     // Inicializa idioma por defecto
-    loadTranslations();
+    loadTranslations(translationsData);
 }
 
