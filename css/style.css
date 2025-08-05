@@ -166,7 +166,7 @@
         }
         .portfolio-item-image {
             width: 100%;
-            height: 120px;
+            height: 100%;
             background: var(--metallic);
             border-radius: 8px;
             margin-bottom: 12px;
@@ -198,12 +198,21 @@
             background: var(--accent);
             color: var(--text-main);
         }
-        .experience-list {
+        .feature-item-image {
+            width: 100%;
+            height: 100%;
+            background: var(--metallic);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            object-fit: contain;
+            box-shadow: 0 1px 8px #bfc5ce33;
+        }
+        .experience-list, .features-list{
             list-style: none;
             padding: 0;
             margin: 0;
         }
-        .experience-item {
+        .experience-item, .feature-item {
             margin-bottom: 18px;
             padding-bottom: 12px;
             border-bottom: 1px solid var(--metallic);

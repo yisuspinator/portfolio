@@ -13,6 +13,7 @@
         "aboutPhoto": "Tu Foto",
         "portfolioTitle": "Portafolio",
         "experienceTitle": "Experiencia",
+        "featuresTitle": "Caracteristicas",
         "contactTitle": "Contacto",
         "contactFormTitle": "Enviame un mensaje",
         "contactFormDescription": "Usa el siguiente formulario para enviarme un mensaje directamente. Responderé tan pronto como me sea posible.",
@@ -31,7 +32,8 @@
             "name": "Por favor ingresa tu nombre",
             "email": "Por favor ingresa un correo válido",
             "message": "Por favor escribe tu mensaje"
-        }
+        },
+        "piCBToPGNAboutDesc": "Chess Board To PGN es una aplicación donde puedes subir una imagen o foto de una posición de ajedrez valida (bi-dimensional) para generar un archivo PGN (Portable Game Notation). Luego puedes exportar ese archivo PGN o simplemente copiar y pegar el contenido del PGN en cualquier motor o plataforma de ajedrez que soporte el formato PGN, como Chess.com o Lichess."
     },
     "en": {
         "title": "My Portfolio",
@@ -47,6 +49,7 @@
         "aboutPhoto": "Your Photo",
         "portfolioTitle": "Portfolio",
         "experienceTitle": "Experience",
+        "featuresTitle": "Features",
         "contactTitle": "Contact",
         "contactFormTitle": "Send me a message",
         "contactFormDescription": "Use the form below to send me a message directly. I will reply as soon as possible.",
@@ -65,6 +68,7 @@
             "name": "Please enter your name",
             "email": "Please enter a valid email",
             "message": "Please enter your message"
-        }
+        },
+        "piCBToPGNAboutDesc": "Chess Board To PGN is an app where you can upload an image or photo of any bi-dimensional chess position to generate a valid PGN (Portable Game Notation) file. You can then export that PGN file or simply copy and paste the content of the PGN on any chess engine or platform that supports PGN format, like Chess.com or Lichess"
     }
 }

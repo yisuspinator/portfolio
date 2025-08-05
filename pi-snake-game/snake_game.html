@@ -239,8 +239,10 @@
                 <button class="control-button" id="pauseButton">Pausa</button>
                 <button class="control-button" id="resumeButton" style="display: none;">Continuar</button>
             </div>
-            <button id="lang-es" class="cta-button selected" style="display:none" tabindex="0">ES</button>
-            <button id="lang-en" class="cta-button" style="display:none" tabindex="0">EN</button>
+            <!--    
+            <button id="lang-es" class="cta-button selected" tabindex="0">ES</button>
+            <button id="lang-en" class="cta-button" tabindex="0">EN</button>
+            -->
         </div>
         <div class="game-info">
             <div id="score-label">Puntuación: <span id="score">0</span></div>
@@ -262,6 +264,7 @@
         -->
 
         <div class="game-message" id="message">¡Presiona "Iniciar Juego" para empezar!</div>
+        <div id = "logMessages"></div>
         <div class="instructions" id="instructions">
             <strong>Controles:</strong> Usa las <b>flechas del teclado</b> (arriba, abajo, izquierda, derecha) o desliza
             el dedo sobre la pantalla para mover la serpiente.
@@ -288,7 +291,7 @@
                 title: "Snake",
                 scoreLabel: "Score: ",
                 levelLabel: "Level: ",
-                start: "Start Game",
+                start: "Start",
                 reset: "Restart",
                 pause: "Pause",
                 resume: "Resume",
@@ -336,6 +339,13 @@
         const resumeButton = document.getElementById('resumeButton');
         const touchControls = document.getElementById('touchControls');
 
+        /*
+        //Sobrescribir console.log para mostrar mensajes en el div (Para dispositivos móviles)
+        console.log = function(message) {
+            const div = document.getElementById('logMessages');
+            div.innerHTML += `<br>${message}`;
+        };
+        */
 
         function setLang(lang) {
             currentLang = lang;
@@ -352,18 +362,26 @@
             document.title = translations[lang].title;
             document.getElementById('page-title') && (document.getElementById('page-title').textContent = translations[lang].title);
 
+
+            //console.log('Idioma cambiado a:' + lang);
+
             // Actualiza botones activos
+            /*
             document.getElementById('lang-es').classList.toggle('selected', lang === 'es');
             document.getElementById('lang-en').classList.toggle('selected', lang === 'en');
+
             if (lang === 'es') {
                 document.getElementById('lang-es').focus();
             } else {
                 document.getElementById('lang-en').focus();
-            }
+            }*/
+
+            //alert("Idioma cambiado a " + currentLang);
+            // Oculta los botones de idioma para evitar cambios constantes
         }
 
-        document.getElementById('lang-es').addEventListener('click', () => setLang('es'));
-        document.getElementById('lang-en').addEventListener('click', () => setLang('en'));
+        //document.getElementById('lang-es').addEventListener('click', () => setLang('es'));
+        //document.getElementById('lang-en').addEventListener('click', () => setLang('en'));
 
 
         canvas.addEventListener('touchmove', (e) => {
@@ -418,7 +436,7 @@
         }
 
         window.addEventListener('resize', resizeCanvas);
-
+        
         // Funciones dinámicas para grid y tablero
         function getGridSize() {
             return Math.floor(canvas.width / 20);
@@ -454,11 +472,13 @@
 
             generateFood();
             startGameLoop();
+            blurButtons();
         }
 
         function startGameLoop() {
             clearInterval(gameInterval);
             gameInterval = setInterval(gameTick, gameSpeed);
+            blurButtons();
         }
 
         function resumeGame() {
@@ -471,6 +491,7 @@
                 resumeButton.style.display = 'none';
 
                 startGameLoop();
+                blurButtons();
             }
         }
 
@@ -481,6 +502,16 @@
             pauseButton.style.display = 'none';
             resumeButton.style.display = 'inline-block';
             clearInterval(gameInterval);
+
+            blurButtons();
+        }
+
+        function blurButtons() {
+            // Desenfocar botones para evitar problemas de enfoque en móviles
+            startButton.blur();
+            resetButton.blur();
+            pauseButton.blur();
+            resumeButton.blur();
         }
 
         function gameTick() {
@@ -646,8 +677,13 @@
         function isMobile() {
             return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
         }
+        
         if (isMobile()) {
-            touchControls.style.display = 'block';
+            // Mostrar controles táctiles
+            //console.log('Dispositivo móvil detectado, mostrando controles táctiles' + touchControls);
+            if (touchControls !== undefined && touchControls !== null) {
+                touchControls.style.display = 'block';
+            }
         }
 
         // --- Controles táctiles ---
@@ -669,10 +705,12 @@
         });
         
 
-
         // Inicializa idioma por defecto
         setLang(currentLang);
         resizeCanvas();
+
+
+
     </script>
 </body>
 
