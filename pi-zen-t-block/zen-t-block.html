@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Zen-T-Block</title>
+  <link rel="stylesheet" href="css/zen-t-block.css">
+</head>
+
+<body>
+  <div class="game-container">
+    <div id="header" class="language-switcher">
+      <h1 id="game-title">Zen-T-Block</h1>
+      <div class="controls">
+        <button class="control-button" id="startBtn">Iniciar Juego</button>
+        <button class="control-button" id="pauseBtn">Pausar</button>
+      </div>
+      <button id="lang-es" class="cta-button selected" style="display:none">ES</button>
+      <button id="lang-en" class="cta-button" style="display:none">EN</button>
+    </div>
+    <div id="score" style="color: white; font-family: monospace; font-size: 1.5em;">
+      Score: 0
+    </div>
+
+    <canvas id="tetris" width="240" height="400"
+      style="width: 240px; height: 360px; border: 2px solid #0ff; box-shadow: 0 0 10px #0ff;""></canvas>
+
+    <!--
+    <div class=" touch-controls" id="touchControls">
+      <div class="row">
+        <button id="rotateBtn">⟳</button>
+        <button id="changeBtn">C</button>
+      </div>
+      <div class="row">
+        <button id="leftBtn">◀</button>
+        <button id="downBtn">▼</button>
+        <button id="rightBtn">▶</button>
+      </div>
+  </div>
+  -->
+
+  <div class="instructions" id="instructions">
+    Usa las flechas del teclado o desliza el dedo sobre la pantalla para mover y rotar las piezas.<br>
+    También puedes usar <strong>espacio, enter o doble toque</strong> para cambiar la pieza.<br>
+    ¡Llena filas para ganar puntos!
+  </div>
+  </div>
+
+  <script src="js/zen-t-block.js"></script>
+  <script>
+    init();
+  </script>
+
+</body>
+
+</html>

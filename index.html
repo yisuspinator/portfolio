@@ -50,17 +50,24 @@
             <div class="portfolio-grid" id="portfolio-list">
                 <!-- Ejemplo de proyecto -->
                 <div class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=400&q=80"
-                        alt="Proyecto 1" class="portfolio-item-image">
-                    <div class="portfolio-item-title" data-es="Nombre del Proyecto" data-en="Project Name">Nombre del
-                        Proyecto</div>
-                    <div class="portfolio-item-desc" data-es="Descripción breve del proyecto."
-                        data-en="Short project description.">Descripción breve del proyecto.</div>
-                    <a href="https://github.com/" target="_blank" class="cta-button" data-es="Más detalles"
+                    <div style="width: 100%; height: 360px; overflow: hidden;">
+                        <img src="pi-chess-board-to-pgn/images/CBPGN02.png" alt="Proyecto 1" class="portfolio-item-image">
+                    </div>
+                    <div class="portfolio-item-title" data-es="Chess Board To PGN" data-en="Chess Board To PGN">Chess
+                        Board
+                        To PGN</div>
+                    <div class="portfolio-item-desc"
+                        data-es="De una imagen de un tablero de ajedrez a un análisis completo usando formato PGN."
+                        data-en="From chess board image to full analysis with PGN format">Convierte una imagen de un
+                        juego
+                        de
+                        ajedrez en un archivo PGN.</div>
+                    <a href="pi-chess-board-to-pgn/chess-board-to-pgn.html" class="cta-button" data-es="Más detalles"
                         data-en="More details">Más detalles</a>
                 </div>
+                <!--
                 <div class="portfolio-item">
-                    <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80"
+                    <img src="images/zen_t_tris/ZTT01.png"
                         alt="Proyecto 2" class="portfolio-item-image">
                     <div class="portfolio-item-title" data-es="Nombre del Proyecto" data-en="Project Name">Nombre del
                         Proyecto</div>
@@ -69,6 +76,7 @@
                     <a href="https://github.com/" target="_blank" class="cta-button" data-es="Más detalles"
                         data-en="More details">Más detalles</a>
                 </div>
+                -->
                 <!-- Más proyectos aquí -->
             </div>
         </section>
@@ -165,11 +173,12 @@
 
                 <li class="experience-item">
                     <strong data-es="Desarrollador junior" data-en="Junior Developer">Desarrollador junior</strong>
-                    <span data-es="en Consult International" data-en="at Consult International">Consult International</span><br>
+                    <span data-es="en Consult International" data-en="at Consult International">Consult
+                        International</span><br>
                     <span data-es="may. 1998 - jul. 1999 · 1 año 3 meses"
                         data-en="May 1998 - July 1999 · 1 year 3 months">may. 1998 - jul. 1999 · 1 año 3 meses</span>
                     <br>
-                    <br>                        
+                    <br>
                     <div data-es="• Desarrollé y modifiqué software para Bancomer (ahora BBVA) para actualizar el formato de fecha de 2 a 4 dígitos en sus sistemas."
                         data-en="• Developed and modified software for Bancomer (now BBVA) to update the date format from 2 to 4 digits in their systems.">
                         • Desarrollé y modifiqué software para Bancomer (ahora BBVA) para actualizar el formato de fecha
@@ -207,7 +216,7 @@
             </div>
             <!--<h3 id="contact-form-description">Usa el siguiente formulario para enviarme un mensaje directamente. Responderé tan pronto como me sea posible.</h3>-->
             </div>
-            <form class="contact-form" id="contact-form" autocomplete="off" onsubmit="return false;">
+            <form class="contact-form" action = "https://formsubmit.co/5560519efc96f71e239be7b0b5f4191b" id="contact-form" method = "POST" autocomplete="off">
                 <label for="name" id="label-name">Nombre</label>
                 <input type="text" id="name" name="name" placeholder="Tu nombre" required
                     oninvalid="setCustomValidationMessages(this)" oninput="setCustomValidationMessages(this)">
@@ -218,6 +227,10 @@
                 <textarea id="message" name="message" placeholder="Escribe tu mensaje aquí..." required
                     oninvalid="setCustomValidationMessages(this)"
                     oninput="setCustomValidationMessages(this)"></textarea>
+
+                <input type="hidden" name="_captcha" value="true">
+                <input type="hidden" name="_next" value="https://github.com">
+
                 <button type="submit" class="cta-button" id="send-btn">Enviar</button>
             </form>
             <div id="contact-success" style="display:none;color:var(--accent-dark);margin-top:12px;font-weight:bold;">
@@ -232,4 +245,5 @@
         init();
     </script>
 </body>
+
 </html>

@@ -2,7 +2,7 @@ let translations = {};
 let currentLang = 'es';
 
 async function loadTranslations() {
-    const response = await fetch('data/translations.json');
+    const response = await fetch('/data/translations.json');
     translations = await response.json();
 
     setLang(currentLang);
@@ -27,6 +27,7 @@ function setLang(lang) {
             ['about-photo-placeholder', 'aboutPhoto'],
             ['portfolio-title', 'portfolioTitle'],
             ['experience-title', 'experienceTitle'],
+            ['features-title', 'featuresTitle'],
             ['contact-title', 'contactTitle'],
             ['contact-form-title', 'contactFormTitle'],
             ['contact-form-description', 'contactFormDescription'],
@@ -34,7 +35,8 @@ function setLang(lang) {
             ['label-email', 'labelEmail'],
             ['label-message', 'labelMessage'],
             ['send-btn', 'sendBtn'],
-            ['footer-text', 'footer']
+            ['footer-text', 'footer'],
+            ['pi-cbtopgn-about-desc', 'piCBToPGNAboutDesc']
         ];
         ids.forEach(([id, key]) => {
             const el = document.getElementById(id);
@@ -75,7 +77,7 @@ function setLang(lang) {
         });
 
         // Traducción dinámica de experiencia
-        document.querySelectorAll('.experience-item strong, .experience-item span, .experience-item div').forEach(el => {
+        document.querySelectorAll('.experience-item strong, .experience-item span, .experience-item div, .feature-item div').forEach(el => {
             if (el && el.dataset[lang]) el.innerHTML = el.dataset[lang].replace(/\\n/g, "<br>");
         });
 
@@ -125,16 +127,26 @@ function init() {
         });
     });
 
+    //let contactForm = document.getElementById('contact-form');
+    //contactForm.action = "https://formsubmit.co/" + emailAddress;
+    //contactForm.action = "https://formsubmit.co/5560519efc96f71e239be7b0b5f4191b";
+    //console.log("Contact form action set to:", contactForm.action);
+
+    /*
     // Formulario de contacto (solo muestra mensaje de éxito)
-    document.getElementById('contact-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        document.getElementById('contact-success').textContent = translations[currentLang].contactSuccess;
-        document.getElementById('contact-success').style.display = 'block';
-        this.reset();
-        setTimeout(() => {
-            document.getElementById('contact-success').style.display = 'none';
-        }, 4000);
-    });
+    let contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            document.getElementById('contact-success').textContent = translations[currentLang].contactSuccess;
+            document.getElementById('contact-success').style.display = 'block';
+            this.reset();
+            setTimeout(() => {
+                document.getElementById('contact-success').style.display = 'none';
+            }, 4000);
+        });
+    } 
+    */
 
     // Inicializa idioma por defecto
     loadTranslations();
