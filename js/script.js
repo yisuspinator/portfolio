@@ -129,7 +129,6 @@ function init(translationsData) {
 
     //let contactForm = document.getElementById('contact-form');
     //contactForm.action = "https://formsubmit.co/" + emailAddress;
-    //contactForm.action = "https://formsubmit.co/5560519efc96f71e239be7b0b5f4191b";
     //console.log("Contact form action set to:", contactForm.action);
 
     /*
